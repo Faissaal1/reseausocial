@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+{% block title %}Profil de {{ app.user.prenom }} {{ app.user.nom	 }}{% endblock %}
+<div class="col-xs4">
+			<h1>Profil de {{ app.user.prenom }} {{ app.user.nom }}</h1>
+		</div>
+	<div class="grix xs4 container">
+		<div> nom : </div>
+        <div> {{ app.user.nom}} </div>
+        <div class="col-xs1">Prénom :</div>
+		<div class="col-xs3">{{ app.user.prenom }}</div>
+		<div class="col-xs1">Email :</div>
+		<div class="col-xs3">{{ app.user.email }}</div>
+        </div>
+{% endblock %}

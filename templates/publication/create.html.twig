@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="border border-grey rounded pt-2">
+        <ul class="nav nav-tabs">
+        <li class="nav-item border border-bottom-grey">
+            <a class="nav-link active" href="#">Faite votre commentaire</a>
+	 <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" role="tabpanel" aria-labelledly="posts-tab">
+				{{ form_start(form) }}
+
+				<div class="row form-group">
+					{{ form_label(form.message) }}
+					{{ form_widget(form.message,  {'attr': {'class':'form-control'}}) }}
+				</div>
+
+				<div class="row form-group">
+					{{ form_label(form.date) }}
+					{{ form_widget(form.date, {'attr': {'class':'form-control'}}) }}
+				</div>
+
+				<div class="row form-group">
+					{{ form_label(form.video) }}
+					{{ form_widget(form.video,  {'attr': {'class':'form-control'}}) }}
+				</div>
+
+				<div class="row form-group">
+					{{ form_label(form.phoyo) }}
+					{{ form_widget(form.phoyo, {'attr': {'class':'form-control'}}) }}
+				</div>
+
+				{{ form_end(form) }}
+			</div>
+		
+					<div class="card-footer">
+						<a href="#" class="card-link">
+							<i class="fas fa-heart"></i>
+						</i>
+						Like
+					</a>
+					<a href="#" class="card-link">
+						<i class="fa fa-comment"></i>
+						Comment
+					</a>
+					<a href="#" class="card-link">
+						<i class="fas fa-share"></i>
+						Share
+					</a>
+                </div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}

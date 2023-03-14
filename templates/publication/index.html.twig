@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Posts index{% endblock %}
+
+{% block body %}
+<div id="body">
+    <h1>Posts index</h1>
+
+    <table class="table" id="table-list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Created Date</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for publication in publications %}
+            <tr>
+                <td>{{ Publications.id }}</td>
+                <td>{{ Publications.messages }}</td>
+                <td>{{ Publications.createdDate ? post.createdDate|date('Y-m-d') : '' }}</td>
+                <td>{{ Publications.photo }}</td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_posts_new') }}" id="create">Create new</a>
+</div>
+{% endblock %}

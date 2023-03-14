@@ -1,0 +1,263 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie
+{% endblock %}
+
+{% block body %}
+<style>
+
+body {
+  padding-top: 0;
+  font-size: 12px;
+  color: #777;
+  background: #f9f9f9;
+  font-family: 'Open Sans',sans-serif;
+  margin-top:20px;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.friend-list {
+  list-style: none;
+margin-left: -40px;
+}
+
+.friend-list li {
+  border-bottom: 1px solid #eee;
+}
+
+.friend-list li a img {
+  float: left;
+  width: 45px;
+  height: 45px;
+  margin-right: 0px;
+}
+
+ .friend-list li a {
+  position: relative;
+  display: block;
+  padding: 10px;
+  transition: all .2s ease;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -ms-transition: all .2s ease;
+  -o-transition: all .2s ease;
+}
+
+.friend-list li.active a {
+  background-color: #f1f5fc;
+}
+
+.friend-list li a .friend-name, 
+.friend-list li a .friend-name:hover {
+  color: #777;
+}
+
+.friend-list li a .last-message {
+  width: 65%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.friend-list li a .time {
+  position: absolute;
+  top: 10px;
+  right: 8px;
+}
+
+small, .small {
+  font-size: 85%;
+}
+
+.friend-list li a .chat-alert {
+  position: absolute;
+  right: 8px;
+  top: 27px;
+  font-size: 10px;
+  padding: 3px 5px;
+}
+
+.chat-message {
+  padding: 60px 20px 115px;
+}
+
+.chat {
+    list-style: none;
+    margin: 0;
+}
+
+.chat-message{
+    background: #f9f9f9;  
+}
+
+.chat li img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50em;
+  -moz-border-radius: 50em;
+  -webkit-border-radius: 50em;
+}
+
+img {
+  max-width: 100%;
+}
+
+.chat-body {
+  padding-bottom: 20px;
+}
+
+.chat li.left .chat-body {
+  margin-left: 70px;
+  background-color: #fff;
+}
+
+.chat li .chat-body {
+  position: relative;
+  font-size: 11px;
+  padding: 10px;
+  border: 1px solid #f1f5fc;
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.chat li .chat-body .header {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #f1f5fc;
+}
+
+.chat li .chat-body p {
+  margin: 0;
+}
+
+.chat li.left .chat-body:before {
+  position: absolute;
+  top: 10px;
+  left: -8px;
+  display: inline-block;
+  background: #fff;
+  width: 16px;
+  height: 16px;
+  border-top: 1px solid #f1f5fc;
+  border-left: 1px solid #f1f5fc;
+  content: '';
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+}
+
+.chat li.right .chat-body:before {
+  position: absolute;
+  top: 10px;
+  right: -8px;
+  display: inline-block;
+  background: #fff;
+  width: 16px;
+  height: 16px;
+  border-top: 1px solid #f1f5fc;
+  border-right: 1px solid #f1f5fc;
+  content: '';
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+}
+
+.chat li {
+  margin: 15px 0;
+}
+
+.chat li.right .chat-body {
+  margin-right: 70px;
+  background-color: #fff;
+}
+
+.chat-box {
+  position: fixed;
+  bottom: 0;
+  left: 444px;
+  right: 0;
+  padding: 15px;
+  border-top: 1px solid #eee;
+  transition: all .5s ease;
+  -webkit-transition: all .5s ease;
+  -moz-transition: all .5s ease;
+  -ms-transition: all .5s ease;
+  -o-transition: all .5s ease;
+}
+
+.primary-font {
+  color: #3c8dbc;
+}
+
+a:hover, a:active, a:focus {
+  text-decoration: none;
+  outline: 0;
+}
+</style>
+	<section class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>Messagerie</h1>
+				<h2>Eléments envoyés</h2>
+				<p>Vous avez envoyé
+					{{ app.user.sent|length }}
+					messages</p>
+			</div>
+			<div class="col-3">De</div>
+			<div class="col-3">Sujet</div>
+			<div class="col-3">Date</div>
+			<div class="col-3">Actions</div>
+			{% for message in app.user.sent %}
+				{% set bold = "" %}
+				{% if message.isRead == 0 %}
+					{% set bold = "fw-bold" %}
+				{% endif %}
+
+				<div class="col-3 {{bold}}">{{ message.sender.email }}</div>
+				<div class="col-3 {{bold}}">
+					<a href="{{ path("read", {id: message.id}) }}">{{ message.title }}</a>
+				</div>
+				<div class="col-3 {{bold}}">{{ message.createdAt|date }}</div>
+				<div class="col-3">
+                    <a href="{{ path("delete", {id: message.id}) }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-excel-fill text-danger" viewbox="0 0 16 16">
+                            <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5.884 4.68L8 7.219l2.116-2.54a.5.5 0 1 1 .768.641L8.651 8l2.233 2.68a.5.5 0 0 1-.768.64L8 8.781l-2.116 2.54a.5.5 0 0 1-.768-.641L7.349 8 5.116 5.32a.5.5 0 1 1 .768-.64z"/>
+                        </svg>
+                    </a>
+				</div>
+			{% endfor %}
+
+
+			<div class="col">
+				<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+					Voir mes dossiers
+				</a>
+				<a href="{{path("send")}}" class="btn btn-primary">Envoyer un message</a>
+			</div>
+		</div>
+	</section>
+	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-header">
+			<h2 class="offcanvas-title" id="offcanvasExampleLabel">Mes dossiers</h2>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+			<div class="list-group">
+				<a href="{{ path("messages") }}" class="list-group-item list-group-item-action">Accueil</a>
+			</div>
+			<div class="list-group">
+				<a href="{{ path("received") }}" class="list-group-item list-group-item-action">Boîte de réception</a>
+			</div>
+			<div class="list-group">
+				<a href="{{ path("sent") }}" class="list-group-item list-group-item-action active">Eléments envoyés</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
